@@ -1,5 +1,6 @@
 import asyncio, json, io, logging
 from datetime import datetime
+from aiohttp import web
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.client.default import DefaultBotProperties
@@ -31,28 +32,56 @@ async def scheduled_backup(bot):
             await asyncio.sleep(300)
 
 
+# ─── وب سرور ساده (فقط برای Render) ───
+async def handle_health(request):
+    return web.Response(text="🤖 Bot is running!", status=200)
+
+
+async def start_web_server():
+    app = web.Application()
+    app.router.add_get("/", handle_health)
+    app.router.add_get("/health", handle_health)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", PORT)
+    await site.start()
+    logger.info(f"🌐 وب سرور روی پورت {PORT}")
+
+
 async def main():
-    if not BOT_TOKEN: raise ValueError("BOT_TOKEN تنظیم نشده!")
-    if not MAIN_ADMINS: raise ValueError("MAIN_ADMINS تنظیم نشده!")
+    if not BOT_TOKEN:
+        raise ValueError("BOT_TOKEN تنظیم نشده!")
+    if not MAIN_ADMINS:
+        raise ValueError("MAIN_ADMINS تنظیم نشده!")
+
     await init_db()
     logger.info("✅ دیتابیس آماده")
+
+    # وب سرور ساده (Render پورت میخواد)
+    await start_web_server()
+
     bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     dp = Dispatcher(storage=MemoryStorage())
+
     dp.message.middleware(ThrottlingMiddleware())
     dp.message.middleware(UserCheckMiddleware())
     dp.message.middleware(AntiSpamMiddleware())
     dp.message.middleware(ForceJoinMiddleware())
     dp.callback_query.middleware(ThrottlingMiddleware())
+
     for r in all_routers:
         dp.include_router(r)
-    # وب سرور غیرفعال — Render نیازی بهش نداره
+
     asyncio.create_task(scheduled_backup(bot))
+
     me = await bot.me()
     logger.info(f"🤖 @{me.username} فعال!")
+
     try:
         await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
     finally:
         await bot.session.close()
+
 
 if __name__ == "__main__":
     asyncio.run(main())
