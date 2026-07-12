@@ -1,0 +1,11 @@
+services:
+  - type: worker
+    name: pv-bot
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: MAIN_ADMINS
+        value: "7307516760"
