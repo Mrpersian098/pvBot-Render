@@ -13,17 +13,17 @@ class PhoneState(StatesGroup):
 
 
 BRANDS = {
-    "apple": "اپل (Apple)", "samsung": "سامسونگ (Samsung)",
-    "xiaomi": "شیائومی (Xiaomi)", "huawei": "هوآوی (Huawei)",
-    "oppo": "اوپو (OPPO)", "vivo": "ویوو (Vivo)",
-    "oneplus": "وان‌پلاس (OnePlus)", "realme": "ریلمی (Realme)",
-    "nokia": "نوکیا (Nokia)", "sony": "سونی (Sony)",
-    "lg": "ال‌جی (LG)", "motorola": "موتورولا (Motorola)",
-    "google": "گوگل (Google)", "nothing": "ناتینگ (Nothing)",
-    "honor": "آنر (Honor)", "tecno":‌ "تکنو (Tecno)",
-    "itel": "ایتِل (Itel)", "infinix": "اینفینیکس (Infinix)",
-    "asus": "ایسوس (Asus)", "lenovo": "لنوو (Lenovo)",
-    "poco": "پوکو (POCO)", "redmi": "ردmi (Redmi)",
+    "apple": "Apple", "samsung": "Samsung",
+    "xiaomi": "Xiaomi", "huawei": "Huawei",
+    "oppo": "OPPO", "vivo": "Vivo",
+    "oneplus": "OnePlus", "realme": "Realme",
+    "nokia": "Nokia", "sony": "Sony",
+    "lg": "LG", "motorola": "Motorola",
+    "google": "Google", "nothing": "Nothing",
+    "honor": "Honor", "tecno": "Tecno",
+    "itel": "Itel", "infinix": "Infinix",
+    "asus": "Asus", "lenovo": "Lenovo",
+    "poco": "POCO", "redmi": "Redmi",
 }
 
 
